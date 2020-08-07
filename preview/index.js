@@ -1,50 +1,46 @@
 /* global mapboxgl */
-var layers = require('../layers.json')
+var style = require('../style.json')
 
-var style = {
-  version: 8,
-  name: 'Blank',
-  id: 'blank',
-  center: [0, 0],
-  zoom: 0,
-  sources: {},
-  layers: [
-    {
-      id: 'background',
-      type: 'background',
-      paint: {
-        'background-color': 'rgba(255,255,255,1)'
-      }
-    }
-  ]
-}
-
-var sources = [{
-  id: 'boundaries-source',
-  data: require('../dist/boundaries.json')
-}, {
-  id: 'lakes-source',
-  data: require('../dist/lakes.json')
-}, {
-  id: 'land-source',
-  data: require('../dist/land.json')
-}, {
-  id: 'rivers-source',
-  data: require('../dist/rivers.json')
-}]
+var sources = [
+  {
+    id: 'boundaries-source',
+    data: require('../dist/boundaries.json')
+  },
+  {
+    id: 'lakes-source',
+    data: require('../dist/lakes.json')
+  },
+  {
+    id: 'land-source',
+    data: require('../dist/land.json')
+  },
+  {
+    id: 'rivers-source',
+    data: require('../dist/rivers.json')
+  },
+  {
+    id: 'graticule-source',
+    data: require('../dist/graticule.json')
+  }
+]
 
 mapboxgl.accessToken =
   'pk.eyJ1IjoiZGlnaWRlbSIsImEiOiJuM3FabmNFIn0._gF6262MSzePWUChu4S9PA'
-var map = new mapboxgl.Map({
+var map = (window.map = new mapboxgl.Map({
   container: 'map',
-  style: style
-})
+  style: {
+    version: 8,
+    name: 'Empty',
+    sources: {},
+    layers: []
+  }
+}))
 
 map.on('load', function () {
   for (const { id, data } of sources) {
     map.addSource(id, { type: 'geojson', data: data })
   }
-  for (const layer of layers) {
+  for (const layer of style.layers) {
     map.addLayer(layer)
   }
 })

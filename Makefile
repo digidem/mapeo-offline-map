@@ -8,11 +8,10 @@ SIMPLIFY = node --max_old_space_size=8192 bin/simplify
 OGR_OPTIONS := -lco COORDINATE_PRECISION=2 -lco WRITE_NAME=NO -lco RFC7946=YES
 
 clean:
-	rm -rf build
+	rm -rf dist
 	rm -rf $(TMPDIR)
-	rm -rf geojson
 
-all: dist/rivers.json dist/land.json dist/boundaries.json dist/lakes.json
+all: dist/rivers.json dist/land.json dist/boundaries.json dist/lakes.json dist/graticule.json
 
 #################
 # Download data #
@@ -76,3 +75,6 @@ dist/boundaries.json: $(SHPDIR)/ne_110m_admin_0_boundary_lines_land.shp
 	mkdir -p $(dir $@)
 	rm -f $@
 	ogr2ogr -f 'GeoJSON' $(OGR_OPTIONS) $@ $< -dialect sqlite -sql "SELECT ST_Union(geometry) FROM $(basename $(notdir $<))"
+
+dist/graticule.json:
+	scripts/graticule.js > $@

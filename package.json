@@ -2,11 +2,11 @@
   "name": "mapeo-offline-map",
   "version": "1.0.1",
   "description": "Fallback offline map data and styles for Mapeo",
-  "main": "layers.json",
+  "main": "style.json",
   "scripts": {
     "start": "budo --dir preview/ preview/index.js --live --open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "make all"
+    "build": "make clean && make all"
   },
   "keywords": [
     "mapeo"
@@ -14,6 +14,7 @@
   "author": "Digital Democracy",
   "license": "MIT",
   "devDependencies": {
+    "@turf/helpers": "^6.1.4",
     "budo": "^11.6.4"
   },
   "files": [
