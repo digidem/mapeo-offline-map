@@ -1,0 +1,31 @@
+{
+  "name": "mapeo-offline-map",
+  "version": "1.0.0",
+  "description": "Fallback offline map data and styles for Mapeo",
+  "main": "layers.json",
+  "scripts": {
+    "start": "budo --dir preview/ preview/index.js --live --open",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "make all"
+  },
+  "keywords": [
+    "mapeo"
+  ],
+  "author": "Digital Democracy",
+  "license": "MIT",
+  "devDependencies": {
+    "budo": "^11.6.4"
+  },
+  "files": [
+    "build/*"
+  ],
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/digidem/mapeo-offline-map.git"
+  },
+  "bugs": {
+    "url": "https://github.com/digidem/mapeo-offline-map/issues"
+  },
+  "homepage": "https://github.com/digidem/mapeo-offline-map#readme"
+}

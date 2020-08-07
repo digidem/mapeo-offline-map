@@ -1,0 +1,84 @@
+[
+  {
+    "id": "ocean",
+    "type": "background",
+    "layout": {},
+    "paint": {
+      "background-color": "#78bced"
+    }
+  },
+  {
+    "type": "fill",
+    "paint": {
+      "fill-color": "#ece1cb"
+    },
+    "layout": {},
+    "source": "land-source",
+    "id": "land"
+  },
+  {
+    "type": "line",
+    "paint": {
+      "line-color": "#78bced",
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 2, 0, 4, 1],
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["get", "strokeweig"],
+        0.15,
+        0.25,
+        1.2,
+        1.5
+      ]
+    },
+    "layout": {
+      "line-join": "round",
+      "line-cap": "round"
+    },
+    "source": "rivers-source",
+    "id": "rivers"
+  },
+  {
+    "type": "fill",
+    "paint": {
+      "fill-color": "#78bced"
+    },
+    "layout": {},
+    "source": "lakes-source",
+    "id": "lakes"
+  },
+  {
+    "source": "boundaries-source",
+    "type": "line",
+    "paint": {
+      "line-color": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        6,
+        "hsl(40, 46%, 86%)",
+        8,
+        "hsl(0, 0%, 87%)"
+      ],
+      "line-width": ["interpolate", ["linear"], ["zoom"], 3, 3.5, 10, 8],
+      "line-opacity": ["interpolate", ["linear"], ["zoom"], 3, 0, 4, 0.5],
+      "line-blur": ["interpolate", ["linear"], ["zoom"], 3, 0, 10, 2]
+    },
+    "layout": {
+      "line-join": "round"
+    },
+    "id": "boundaries-bg"
+  },
+  {
+    "source": "boundaries-source",
+    "type": "line",
+    "paint": {
+      "line-color": "#828282",
+      "line-width": ["interpolate", ["linear"], ["zoom"], 3, 0.5, 10, 2]
+    },
+    "layout": {
+      "line-join": "round"
+    },
+    "id": "boundaries"
+  }
+]
