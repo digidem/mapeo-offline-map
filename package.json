@@ -1,6 +1,6 @@
 {
   "name": "mapeo-offline-map",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Fallback offline map data and styles for Mapeo",
   "main": "style.json",
   "scripts": {
