@@ -24,7 +24,7 @@ when displaying a map with a tileset).
 
 ## Build
 
-To build all the map data files
+Make sure to have [GDAL](https://gdal.org/) installed in your system. To build all the map data files
 
 ```sh
 npm run build
