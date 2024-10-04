@@ -4,6 +4,7 @@ comma := ,
 TMPDIR := intermediate
 ZIPDIR := $(TMPDIR)/zip
 SHPDIR := $(TMPDIR)/shp
+JSONDIR := $(TMPDIR)/json
 SIMPLIFY = node --max_old_space_size=8192 bin/simplify
 OGR_OPTIONS := -lco COORDINATE_PRECISION=2 -lco WRITE_NAME=NO -lco RFC7946=YES
 
@@ -11,13 +12,13 @@ clean:
 	rm -rf dist
 	rm -rf $(TMPDIR)
 
-all: dist/rivers.json dist/land.json dist/boundaries.json dist/lakes.json dist/graticule.json
+all: dist/style.json
 
 #################
 # Download data #
 #################
 
-NE_URL := https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/
+NE_URL := https://naciscdn.org/naturalearth/
 
 $(ZIPDIR)/%.zip:
 	mkdir -p $(dir $@)
@@ -50,31 +51,47 @@ $(SHPDIR)/ne_%.shp:
 # Convert shp files to GeoJSON #
 ################################
 
-dist/lakes.json: $(SHPDIR)/ne_50m_lakes.shp
+$(JSONDIR)/lakes.json: $(SHPDIR)/ne_50m_lakes.shp
 	mkdir -p $(dir $@)
 	rm -f $@
 	ogr2ogr -f 'GeoJSON' $(OGR_OPTIONS) $@ $< -select scalerank,name
 
-dist/places.json: $(SHPDIR)/ne_50m_populated_places.shp
+$(JSONDIR)/places.json: $(SHPDIR)/ne_50m_populated_places.shp
 	mkdir -p $(dir $@)
 	rm -f $@
 	ogr2ogr -f 'GeoJSON' $(OGR_OPTIONS) $@ $< -select SCALERANK,NAME
 
-dist/rivers.json: $(SHPDIR)/ne_50m_rivers_lake_centerlines_scale_rank.shp
+$(JSONDIR)/rivers.json: $(SHPDIR)/ne_50m_rivers_lake_centerlines_scale_rank.shp
 	mkdir -p $(dir $@)
 	rm -f $@
 	ogr2ogr -f 'GeoJSON' $(OGR_OPTIONS) $@ $< -select min_zoom,strokeweig
 
 
-dist/land.json: $(SHPDIR)/ne_50m_land.shp
+$(JSONDIR)/land.json: $(SHPDIR)/ne_50m_land.shp
 	mkdir -p $(dir $@)
 	rm -f $@
 	ogr2ogr -f 'GeoJSON' $(OGR_OPTIONS) $@ $< -dialect sqlite -sql "SELECT ST_Union(geometry) FROM $(basename $(notdir $<))"
 
-dist/boundaries.json: $(SHPDIR)/ne_110m_admin_0_boundary_lines_land.shp
+$(JSONDIR)/boundaries.json: $(SHPDIR)/ne_110m_admin_0_boundary_lines_land.shp
 	mkdir -p $(dir $@)
 	rm -f $@
 	ogr2ogr -f 'GeoJSON' $(OGR_OPTIONS) $@ $< -dialect sqlite -sql "SELECT ST_Union(geometry) FROM $(basename $(notdir $<))"
 
-dist/graticule.json:
+$(JSONDIR)/graticule.json:
 	scripts/graticule.js > $@
+
+dist/style.json: $(JSONDIR)/rivers.json $(JSONDIR)/land.json $(JSONDIR)/boundaries.json $(JSONDIR)/lakes.json $(JSONDIR)/graticule.json
+	mkdir -p $(dir $@)
+	jq --slurpfile rivers $(JSONDIR)/rivers.json \
+		 --slurpfile land $(JSONDIR)/land.json \
+		 --slurpfile boundaries $(JSONDIR)/boundaries.json \
+		 --slurpfile lakes $(JSONDIR)/lakes.json \
+		 --slurpfile graticule $(JSONDIR)/graticule.json \
+		 '.sources += { \
+			  "rivers": {"type": "geojson", "data": $$rivers[0]}, \
+				"land": {"type": "geojson", "data": $$land[0]}, \
+				"boundaries": {"type": "geojson", "data": $$boundaries[0]}, \
+				"lakes": {"type": "geojson", "data": $$lakes[0]}, \
+				"graticule": {"type": "geojson", "data": $$graticule[0]} \
+		 }' \
+		 style-no-sources.json > $@

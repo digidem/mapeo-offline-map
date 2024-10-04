@@ -20,7 +20,7 @@
         "fill-color": "#ece1cb"
       },
       "layout": {},
-      "source": "land-source",
+      "source": "land",
       "id": "land"
     },
     {
@@ -42,7 +42,7 @@
         "line-join": "round",
         "line-cap": "round"
       },
-      "source": "rivers-source",
+      "source": "rivers",
       "id": "rivers"
     },
     {
@@ -51,11 +51,11 @@
         "fill-color": "#78bced"
       },
       "layout": {},
-      "source": "lakes-source",
+      "source": "lakes",
       "id": "lakes"
     },
     {
-      "source": "boundaries-source",
+      "source": "boundaries",
       "type": "line",
       "paint": {
         "line-color": [
@@ -77,7 +77,7 @@
       "id": "boundaries-bg"
     },
     {
-      "source": "boundaries-source",
+      "source": "boundaries",
       "type": "line",
       "paint": {
         "line-color": "#828282",
@@ -90,7 +90,7 @@
       "id": "boundaries-dd"
     },
     {
-      "source": "graticule-source",
+      "source": "graticule",
       "type": "line",
       "paint": {
         "line-color": "hsl(0, 100%, 0%)",
@@ -112,7 +112,7 @@
       "layout": {},
       "filter": ["match", ["get", "interval"], ["1"], true, false],
       "type": "line",
-      "source": "graticule-source",
+      "source": "graticule",
       "id": "graticule-1",
       "paint": {
         "line-color": "hsl(0, 0%, 0%)",
@@ -144,7 +144,7 @@
       "layout": {},
       "filter": ["match", ["get", "interval"], ["0.1"], true, false],
       "type": "line",
-      "source": "graticule-source",
+      "source": "graticule",
       "id": "graticule-0.1",
       "paint": {
         "line-color": "hsl(0, 0%, 0%)",

@@ -2,11 +2,12 @@
   "name": "mapeo-offline-map",
   "version": "2.0.0",
   "description": "Fallback offline map data and styles for Mapeo",
-  "main": "style.json",
+  "main": "dist/style.json",
   "scripts": {
     "start": "budo --dir preview/ preview/index.js --live --open",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "make clean && make all"
+    "build": "make clean && make all",
+    "prepack": "npm run build"
   },
   "keywords": [
     "mapeo"
@@ -18,7 +19,7 @@
     "budo": "^11.6.4"
   },
   "files": [
-    "dist/*"
+    "dist"
   ],
   "dependencies": {},
   "repository": {
